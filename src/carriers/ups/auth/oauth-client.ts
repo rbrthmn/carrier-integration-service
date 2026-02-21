@@ -2,7 +2,7 @@ import { AuthClient } from "../../../auth/auth-client";
 import { TokenData } from "../../../auth/token-data";
 import {HttpClient} from "../../../http/client";
 import {AuthenticationError} from "../../../domain/models/errors";
-import {UPSConfig} from "../config";
+import {UPSConfig} from "../ups-config";
 
 interface UPSTokenResponse {
   access_token: string;
