@@ -15,3 +15,10 @@ export class CarrierNotFoundError extends ShippingError {
         this.name = 'CarrierNotFoundError';
     }
 }
+
+export class AuthenticationError extends ShippingError {
+    constructor(message: string) {
+        super(message, 'AUTH_ERROR');
+        this.name = 'AuthenticationError';
+    }
+}
