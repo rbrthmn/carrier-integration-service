@@ -1,8 +1,9 @@
 import { UPSOAuthClient } from "./auth/oauth-client";
-import { UPSConfig } from "./config";
+import { UPSConfig } from "./ups-config";
 import {Carrier} from "../carrier";
 import {CarrierOperations} from "../types";
 import {HttpClient} from "../../http/client";
+import {UPSRatingOperation} from "./operations/rating/rating";
 
 export class UPSCarrier implements Carrier {
   readonly name = 'United Parcel Service';
