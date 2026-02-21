@@ -8,3 +8,10 @@ export class ShippingError extends Error {
         this.name = 'ShippingError';
     }
 }
+
+export class CarrierNotFoundError extends ShippingError {
+    constructor(carrierCode: string) {
+        super(`Carrier '${carrierCode}' is not registered`, 'CARRIER_NOT_FOUND');
+        this.name = 'CarrierNotFoundError';
+    }
+}
