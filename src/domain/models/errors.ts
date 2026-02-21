@@ -51,3 +51,10 @@ export class NetworkError extends ShippingError {
         this.name = 'NetworkError';
     }
 }
+
+export class ValidationError extends ShippingError {
+    constructor(message: string) {
+        super(message, 'VALIDATION_ERROR');
+        this.name = 'ValidationError';
+    }
+}

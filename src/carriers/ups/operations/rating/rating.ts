@@ -1,6 +1,6 @@
 import {RateQuote} from "../../../../domain";
 import {AuthClient} from "../../../../auth/auth-client";
-import {RateRequest} from "../../../../domain/models/rate-request";
+import {RateRequest, RateRequestSchema} from "../../../../domain/models/rate-request";
 import {UPSConfig} from "../../ups-config";
 import {HttpClient} from "../../../../http/client";
 import {
@@ -8,7 +8,8 @@ import {
   CarrierAPIError,
   NetworkError,
   RateLimitError,
-  ShippingError
+  ShippingError,
+  ValidationError
 } from "../../../../domain/models/errors";
 import {toUPSRateRequest} from "../../mappers/request";
 import {fromUPSRateResponse} from "../../mappers/response";
@@ -25,28 +26,30 @@ export class UPSRatingOperation {
   }
 
   async execute(request: RateRequest): Promise<RateQuote[]> {
+    if (!RateRequestSchema.safeParse(request).success) throw new ValidationError('Invalid rate request');
+
     const upsRequest = toUPSRateRequest(request);
+
     return this.executeRequest(upsRequest);
   }
 
   private async executeRequest(request: UPSRateRequest): Promise<RateQuote[]> {
-  try {
-    const token = await this.authClient.getAccessToken();
-    
-    const response = await this.httpClient.post<UPSRateResponse>(
-      this.config.ratingUrl,
-      request,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        timeout: 30000, // 30 second timeout
-      }
-    );
-    
-    return fromUPSRateResponse(response);
+    try {
+      const token = await this.authClient.getAccessToken();
 
+      const response = await this.httpClient.post<UPSRateResponse>(
+        this.config.ratingUrl,
+        request,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          timeout: 30000, // 30 second timeout
+        }
+      );
+
+    return fromUPSRateResponse(response);
   } catch (error) {
     // handle Axios/HTTP errors
     if (this.isHttpError(error)) {
