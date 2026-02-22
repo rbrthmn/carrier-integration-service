@@ -9,7 +9,7 @@ export function loadUPSConfig(): UPSConfig {
   return {
     clientId: process.env.UPS_CLIENT_ID || '',
     clientSecret: process.env.UPS_CLIENT_SECRET || '',
-    tokenUrl: process.env.UPS_TOKEN_URL || 'https://wwwcie.ups.com/security/v1/oauth/token',
-    ratingUrl: process.env.UPS_RATING_URL || 'https://wwwcie.ups.com/api/rating/v1'
+    tokenUrl: process.env.UPS_BASE_URL + '/security/v1/oauth/token' || 'https://wwwcie.ups.com/security/v1/oauth/token',
+    ratingUrl: process.env.UPS_BASE_URL + 'api/rating/v1' || 'https://wwwcie.ups.com/api/rating/v1'
   };
 }
